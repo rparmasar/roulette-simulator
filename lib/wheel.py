@@ -13,4 +13,5 @@ class Wheel:
         "Simulates a spin of the wheel and randomly chooses a spoke"
         maxIndex = len(self.spokes)
         index = randint(0, maxIndex)
-        return index
+        
+        return self.spokes[index]
