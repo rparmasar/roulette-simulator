@@ -12,6 +12,6 @@ class Wheel:
     def spin(self):
         "Simulates a spin of the wheel and randomly chooses a spoke"
         maxIndex = len(self.spokes)
-        index = randint(0, maxIndex)
-        
+        index = randint(0, maxIndex - 1)
+        print(index)
         return self.spokes[index]
