@@ -62,20 +62,49 @@ class Bet:
 
     TYPES
     =====
-    TODO: Confirm these payouts
-    'zero': Pays 52 to 1
 
-    'single_colour': Pays 2 to 1
+    Inside Bets
+    ===========
 
-    'number_parity': Odd or Even: Pays 2 to 1
+    'single_number': Pays 35 to 1
 
-    'single_number': Pays 20 to 1
+    TODO: Add success condition
+    'split: Covers 2 adjacent numbers, horizontally or vertically. Pays 17 to 1.
 
-    'lower_third': Covers 1-12; Pays 4 to 1
+    TODO: Add success condition
+    'three_in_a_row': Covers 3 consecutive numbers. Pays 11 to 1.
+
+    TODO: Add success condition
+    'squad': Covers 4 consecutive numbers. Pays 8 to 1.
     
-    'middle_third': Covers 13-24; Pays 4 to 1
+    TODO: Add success condition
+    'six_in_a_row: Covers 6 consecutive numbers. Pays 5 to 1.
+    
+    Outside Bets
+    ============
 
-    'upper_third': Covers 25-36; Pays 4 to 1
+    'single_colour': Pays 1 to 1
+
+    'number_parity': Odd or Even: Pays 1 to 1
+
+    TODO: Add success condition
+    'bigger': Covers 1-18: Pays 1 to 1
+    
+    TODO: Add success condition
+    'smaller': Covers 19-36: Pays 1 to 1
+
+    TODO: Check here: https://www.roulette17.com/bets/columns/
+    'first_column':
+    
+    'second_column': 
+    
+    'third_column':
+
+    'lower_third': Covers 1-12; Pays 2 to 1
+    
+    'middle_third': Covers 13-24; Pays 2 to 1
+
+    'upper_third': Covers 25-36; Pays 2 to 1
     """
     def __init__(self, betType: str, wager: float) -> None:
         self.betType = betType
