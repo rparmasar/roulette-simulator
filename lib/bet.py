@@ -1,3 +1,12 @@
+PAYOUT_MULTIPLIERS = {
+    'zero': 52,
+    'single_colour': 52,
+    'zero': 52,
+    'zero': 52,
+    'zero': 52,
+    'zero': 52,
+}
+
 def _createSuccessDomain(betType):
     """Returns a condition such that if a spin result falls in this domain, the payout is set to true."""
 
@@ -47,10 +56,6 @@ def _createSuccessDomain(betType):
     # If we get to here then its an invalid / not supported bet
     raise ValueError(f"Bet type: {betType} not supported!")
 
-def _setPayout(betType):
-    """Sets the payout for a given betType"""
-    pass
-
 class Bet:
     """
     Represents a bet placed by a player that is evaluated at the end of a spin.
@@ -76,7 +81,7 @@ class Bet:
         self.betType = betType
         self.wager = wager
         self.successDomainValidator = _createSuccessDomain(betType)
-    def evaluate(self, spinResult: object) -> float:
+    def resolve(self, spinResult: object) -> float:
         """Returns the update required to a Player's balance."""
 
 
