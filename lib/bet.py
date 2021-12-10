@@ -1,4 +1,4 @@
-from constants import board_layouts, payout_multipliers
+from .constants import board_layouts, payout_multipliers
 
 
 # TODO: Refactor to allow for different layouts

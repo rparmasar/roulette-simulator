@@ -1,6 +1,6 @@
 from random import randint
 from . import wheel_spoke
-from constants import board_layouts
+from .constants import board_layouts
 
 class Wheel:
     """
