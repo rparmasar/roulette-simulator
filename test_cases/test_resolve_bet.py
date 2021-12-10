@@ -81,3 +81,19 @@ def testOutsideGroupBetResolveFail():
     wager_result = test_bet.resolve(test_spin_result)
 
     assert(wager_result == -100)
+
+def testOutsideColumnBetResolveSuccess():
+    test_bet = bet.Bet('first_column', 100)
+    test_spin_result = wheel_spoke.Spoke(34, 'red')
+
+    wager_result = test_bet.resolve(test_spin_result)
+
+    assert(wager_result == 200)
+
+def testOutsideColumnBetResolveFail():
+    test_bet = bet.Bet('first_column', 100)
+    test_spin_result = wheel_spoke.Spoke(26, 'black')
+
+    wager_result = test_bet.resolve(test_spin_result)
+
+    assert(wager_result == -100)

@@ -1,4 +1,4 @@
-from .constants import board_layouts, payout_multipliers
+from .constants import payout_multipliers
 
 EUROPEAN_PAYOUTS = payout_multipliers.EUROPEAN_PAYOUT_MULTIPLIERS
 
@@ -69,6 +69,27 @@ def _createSuccessDomain(betType):
             return spoke.number in range(19,36 + 1)
     
         return isInDomain
+    
+    if betType == 'first_column':
+        def isInDomain(spoke: object) -> bool:
+            domain = range(1, 34+1, 3)
+            return spoke.number in domain
+        
+        return isInDomain
+    
+    if betType == 'second_column':
+        def isInDomain(spoke: object) -> bool:
+            domain = range(2, 35+1, 3)
+            return spoke.number in domain
+        
+        return isInDomain
+    
+    if betType == 'third_column':
+        def isInDomain(spoke: object) -> bool:
+            domain = range(3, 36+1, 3)
+            return spoke.number in domain
+        
+        return isInDomain
 
     if betType == 'lower_third':
         def isInDomain(spoke : object) -> bool:
@@ -128,12 +149,11 @@ class Bet:
     
     'smaller': Covers 19-36: Pays 1 to 1
 
-    TODO: Check here: https://www.roulette17.com/bets/columns/
-    'first_column':
+    'first_column': Covers 1-34 increasing in 3's. Pays 2 to 1.
     
-    'second_column': 
+    'second_column': Covers 2-35 increasing in 3's. Pays 2 to 1.
     
-    'third_column':
+    'third_column': Covers 3-36 increasing in 3's. Pays 2 to 1.
 
     'lower_third': Covers 1-12; Pays 2 to 1
     
@@ -150,6 +170,8 @@ class Bet:
         self.payout = EUROPEAN_PAYOUTS[betType]
     def resolve(self, spinResult: object) -> float:
         """Returns the update required to a Player's balance."""
+
+        # Here we figure out which params to use in the success domain validator
         if 'numbers' in self.params:
             # params of the form {'numbers': [1,2,3,...]}
             resolveStatus = self.successDomainValidator(spinResult, self.params['numbers'])
