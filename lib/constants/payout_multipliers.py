@@ -1,7 +1,7 @@
 EUROPEAN_PAYOUT_MULTIPLIERS = {
     # INSIDE BETS
     'single_number': 35,
-    'split': 17,
+    'two_numbers': 17,
     'three_in_a_row': 11,
     'squad': 8,
     'six_in_a_row': 5,

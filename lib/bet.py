@@ -7,9 +7,39 @@ def _createSuccessDomain(betType):
     BOARD_ARR = board_layouts.EUROPEAN_BOARD_NUMBER_SEQ
 
     # Here the strategy is to create the success checking fn and then return that depending on the bet type.
-    if betType == 'zero':
-        def isInDomain(spoke : object) -> bool:
-            return spoke.number == 0
+    if betType == 'single_number':
+        def isInDomain(spoke : object,  number: int) -> bool:
+            return spoke.number == number
+        
+        return isInDomain
+    
+    if betType == 'two_numbers':
+        def isInDomain(spoke: object, two_number_arr) -> bool:
+            return spoke.number in two_number_arr
+        
+        return isInDomain
+    
+    if betType == 'three_numbers':
+        def isInDomain(spoke: object, three_number_arr) -> bool:
+            return spoke.number in three_number_arr
+        
+        return isInDomain
+    
+    if betType == 'four_numbers':
+        def isInDomain(spoke: object, four_number_arr) -> bool:
+            return spoke.number in four_number_arr
+        
+        return isInDomain
+    
+    if betType == 'five_numbers':
+        def isInDomain(spoke: object, five_number_arr) -> bool:
+            return spoke.number in five_number_arr
+        
+        return isInDomain
+    
+    if betType == 'six_numbers':
+        def isInDomain(spoke: object, six_number_arr) -> bool:
+            return spoke.number in six_number_arr
         
         return isInDomain
     
@@ -27,6 +57,14 @@ def _createSuccessDomain(betType):
                 return (spoke.number % 2) != 0
         
         return isInDomain
+    
+    if betType == 'bigger':
+        def isInDomain(spoke: object) -> bool:
+            return spoke.number in range(1,18 + 1)
+    
+    if betType == 'smaller':
+        def isInDomain(spoke: object) -> bool:
+            return spoke.number in range(19,36 + 1)
     
     if betType == 'lower_third':
         def isInDomain(spoke : object) -> bool:
@@ -64,17 +102,15 @@ class Bet:
 
     'single_number': Pays 35 to 1
 
-    TODO: Add success condition
-    'split: Covers 2 adjacent numbers, horizontally or vertically. Pays 17 to 1.
+    'two_numbers': Covers 2 consecutive numbers. Pays 17 to 1.
 
-    TODO: Add success condition
-    'three_in_a_row': Covers 3 consecutive numbers. Pays 11 to 1.
+    'three_numbers': Covers 3 consecutive numbers. Pays 11 to 1.
 
-    TODO: Add success condition
-    'squad': Covers 4 consecutive numbers. Pays 8 to 1.
+    'four_numbers': Covers 4 consecutive numbers. Pays 8 to 1.
     
-    TODO: Add success condition
-    'six_in_a_row: Covers 6 consecutive numbers. Pays 5 to 1.
+    'five_numbers': Covers 5 consecutive numbers. Pays 6 to 1.
+    
+    'six_numbers: Covers 6 consecutive numbers. Pays 5 to 1.
     
     Outside Bets
     ============
