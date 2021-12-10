@@ -1,15 +1,45 @@
-from constants import board_layouts, payout_multipliers
+from .constants import payout_multipliers
 
+EUROPEAN_PAYOUTS = payout_multipliers.EUROPEAN_PAYOUT_MULTIPLIERS
 
 # TODO: Refactor to allow for different layouts
 def _createSuccessDomain(betType):
     """Returns a condition such that if a spin result falls in this domain, the payout is set to true."""
-    BOARD_ARR = board_layouts.EUROPEAN_BOARD_NUMBER_SEQ
 
     # Here the strategy is to create the success checking fn and then return that depending on the bet type.
-    if betType == 'zero':
-        def isInDomain(spoke : object) -> bool:
-            return spoke.number == 0
+    if betType == 'single_number':
+        def isInDomain(spoke : object,  number_arr: list) -> bool:
+            return spoke.number in number_arr
+        
+        return isInDomain
+    
+    if betType == 'two_numbers':
+        def isInDomain(spoke: object, two_number_arr: list) -> bool:
+            return spoke.number in two_number_arr
+        
+        return isInDomain
+    
+    if betType == 'three_numbers':
+        def isInDomain(spoke: object, three_number_arr: list) -> bool:
+            return spoke.number in three_number_arr
+        
+        return isInDomain
+    
+    if betType == 'four_numbers':
+        def isInDomain(spoke: object, four_number_arr: list) -> bool:
+            return spoke.number in four_number_arr
+        
+        return isInDomain
+    
+    if betType == 'five_numbers':
+        def isInDomain(spoke: object, five_number_arr: list) -> bool:
+            return spoke.number in five_number_arr
+        
+        return isInDomain
+    
+    if betType == 'six_numbers':
+        def isInDomain(spoke: object, six_number_arr: list) -> bool:
+            return spoke.number in six_number_arr
         
         return isInDomain
     
@@ -28,6 +58,39 @@ def _createSuccessDomain(betType):
         
         return isInDomain
     
+    if betType == 'bigger':
+        def isInDomain(spoke: object) -> bool:
+            return spoke.number in range(1,18 + 1)
+    
+        return isInDomain
+
+    if betType == 'smaller':
+        def isInDomain(spoke: object) -> bool:
+            return spoke.number in range(19,36 + 1)
+    
+        return isInDomain
+    
+    if betType == 'first_column':
+        def isInDomain(spoke: object) -> bool:
+            domain = range(1, 34+1, 3)
+            return spoke.number in domain
+        
+        return isInDomain
+    
+    if betType == 'second_column':
+        def isInDomain(spoke: object) -> bool:
+            domain = range(2, 35+1, 3)
+            return spoke.number in domain
+        
+        return isInDomain
+    
+    if betType == 'third_column':
+        def isInDomain(spoke: object) -> bool:
+            domain = range(3, 36+1, 3)
+            return spoke.number in domain
+        
+        return isInDomain
+
     if betType == 'lower_third':
         def isInDomain(spoke : object) -> bool:
             domain = range(1,13)
@@ -55,6 +118,7 @@ def _createSuccessDomain(betType):
 class Bet:
     """
     Represents a bet placed by a player that is evaluated at the end of a spin.
+    TODO: Update here.
 
     TYPES
     =====
@@ -64,17 +128,15 @@ class Bet:
 
     'single_number': Pays 35 to 1
 
-    TODO: Add success condition
-    'split: Covers 2 adjacent numbers, horizontally or vertically. Pays 17 to 1.
+    'two_numbers': Covers 2 consecutive numbers. Pays 17 to 1.
 
-    TODO: Add success condition
-    'three_in_a_row': Covers 3 consecutive numbers. Pays 11 to 1.
+    'three_numbers': Covers 3 consecutive numbers. Pays 11 to 1.
 
-    TODO: Add success condition
-    'squad': Covers 4 consecutive numbers. Pays 8 to 1.
+    'four_numbers': Covers 4 consecutive numbers. Pays 8 to 1.
     
-    TODO: Add success condition
-    'six_in_a_row: Covers 6 consecutive numbers. Pays 5 to 1.
+    'five_numbers': Covers 5 consecutive numbers. Pays 6 to 1.
+    
+    'six_numbers: Covers 6 consecutive numbers. Pays 5 to 1.
     
     Outside Bets
     ============
@@ -83,18 +145,15 @@ class Bet:
 
     'number_parity': Odd or Even: Pays 1 to 1
 
-    TODO: Add success condition
     'bigger': Covers 1-18: Pays 1 to 1
     
-    TODO: Add success condition
     'smaller': Covers 19-36: Pays 1 to 1
 
-    TODO: Check here: https://www.roulette17.com/bets/columns/
-    'first_column':
+    'first_column': Covers 1-34 increasing in 3's. Pays 2 to 1.
     
-    'second_column': 
+    'second_column': Covers 2-35 increasing in 3's. Pays 2 to 1.
     
-    'third_column':
+    'third_column': Covers 3-36 increasing in 3's. Pays 2 to 1.
 
     'lower_third': Covers 1-12; Pays 2 to 1
     
@@ -102,12 +161,39 @@ class Bet:
 
     'upper_third': Covers 25-36; Pays 2 to 1
     """
-    def __init__(self, betType: str, wager: float) -> None:
+    def __init__(self, betType: str, wager: float, params: dict={}) -> None:
         self.betType = betType
         self.wager = wager
+        self.params = params
+        # TODO: Need to refactor here for multiple game types.
         self.successDomainValidator = _createSuccessDomain(betType)
+        self.payout = EUROPEAN_PAYOUTS[betType]
+    def __repr__(self) -> str:
+        return f"Bet: {self.wager} on {self.params or self.betType}"
+    def __str__(self) -> str:
+        return f"Bet: {self.wager} on {self.params or self.betType}"
     def resolve(self, spinResult: object) -> float:
         """Returns the update required to a Player's balance."""
+
+        # Here we figure out which params to use in the success domain validator
+        if 'numbers' in self.params:
+            # params of the form {'numbers': [1,2,3,...]}
+            resolveStatus = self.successDomainValidator(spinResult, self.params['numbers'])
+        elif 'parity' in self.params:
+            # params of the form {'parity': 'odd' or 'even'}
+            resolveStatus = self.successDomainValidator(spinResult, self.params['parity'])
+        elif 'colour' in self.params:
+            # params of the form {'colour': 'black' or 'red'}
+            resolveStatus = self.successDomainValidator(spinResult, self.params['colour'])
+        else:
+            resolveStatus = self.successDomainValidator(spinResult)
+
+        
+        if resolveStatus:
+            return self.wager * self.payout
+        else:
+            return self.wager * -1
+        
 
 
     
