@@ -24,10 +24,10 @@ def createWheel(wheelType='European'):
     """
     if wheelType == 'European':
         # Omits 0 as it is green
-        number_sequence = board_layouts.EUROPEAN_BOARD_NUMBER_SEQ
+        # number_sequence = board_layouts.EUROPEAN_BOARD_NUMBER_SEQ
 
         zero_spoke = wheel_spoke.Spoke(0, 'green')
-        spokes = [wheel_spoke.Spoke(i, 'red') if (i % 2) == 0 else wheel_spoke.Spoke(i, 'black') for i in range(0, 36, 1)]
+        spokes = [wheel_spoke.Spoke(i, 'red') if (i % 2) != 0 else wheel_spoke.Spoke(i, 'black') for i in range(1, 37, 1)]
 
         full_spokes = [zero_spoke, *spokes]
         
