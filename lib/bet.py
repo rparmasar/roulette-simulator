@@ -1,10 +1,10 @@
 from .constants import board_layouts, payout_multipliers
 
+EUROPEAN_PAYOUTS = payout_multipliers.EUROPEAN_PAYOUT_MULTIPLIERS
 
 # TODO: Refactor to allow for different layouts
 def _createSuccessDomain(betType):
     """Returns a condition such that if a spin result falls in this domain, the payout is set to true."""
-    BOARD_ARR = board_layouts.EUROPEAN_BOARD_NUMBER_SEQ
 
     # Here the strategy is to create the success checking fn and then return that depending on the bet type.
     if betType == 'single_number':
@@ -62,10 +62,14 @@ def _createSuccessDomain(betType):
         def isInDomain(spoke: object) -> bool:
             return spoke.number in range(1,18 + 1)
     
+        return isInDomain
+
     if betType == 'smaller':
         def isInDomain(spoke: object) -> bool:
             return spoke.number in range(19,36 + 1)
     
+        return isInDomain
+
     if betType == 'lower_third':
         def isInDomain(spoke : object) -> bool:
             domain = range(1,13)
@@ -119,10 +123,8 @@ class Bet:
 
     'number_parity': Odd or Even: Pays 1 to 1
 
-    TODO: Add success condition
     'bigger': Covers 1-18: Pays 1 to 1
     
-    TODO: Add success condition
     'smaller': Covers 19-36: Pays 1 to 1
 
     TODO: Check here: https://www.roulette17.com/bets/columns/
@@ -141,9 +143,16 @@ class Bet:
     def __init__(self, betType: str, wager: float) -> None:
         self.betType = betType
         self.wager = wager
+        # TODO: Need to refactor here for multiple game types.
         self.successDomainValidator = _createSuccessDomain(betType)
+        self.payout = EUROPEAN_PAYOUTS[betType]
     def resolve(self, spinResult: object) -> float:
         """Returns the update required to a Player's balance."""
+        if self.successDomainValidator(self.betType):
+            return self.wager * self.payout
+        else:
+            return self.wager * -1
+        
 
 
     
