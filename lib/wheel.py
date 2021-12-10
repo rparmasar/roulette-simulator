@@ -1,5 +1,6 @@
 from random import randint
 from . import wheel_spoke
+from constants import board_layouts
 
 class Wheel:
     """
@@ -23,7 +24,7 @@ def createWheel(wheelType='European'):
     """
     if wheelType == 'European':
         # Omits 0 as it is green
-        number_sequence = [32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]
+        number_sequence = board_layouts.EUROPEAN_BOARD_NUMBER_SEQ
 
         zero_spoke = wheel_spoke.Spoke(0, 'green')
         spokes = [wheel_spoke.Spoke(i, 'red') if (i % 2) == 0 else wheel_spoke.Spoke(i, 'black') for i in range(0, 36, 1)]
@@ -31,4 +32,5 @@ def createWheel(wheelType='European'):
         full_spokes = [zero_spoke, *spokes]
         
         new_wheel = Wheel(full_spokes, wheelType)
+        
         return new_wheel

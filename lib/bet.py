@@ -1,14 +1,10 @@
-PAYOUT_MULTIPLIERS = {
-    'zero': 52,
-    'single_colour': 52,
-    'zero': 52,
-    'zero': 52,
-    'zero': 52,
-    'zero': 52,
-}
+from constants import board_layouts, payout_multipliers
 
+
+# TODO: Refactor to allow for different layouts
 def _createSuccessDomain(betType):
     """Returns a condition such that if a spin result falls in this domain, the payout is set to true."""
+    BOARD_ARR = board_layouts.EUROPEAN_BOARD_NUMBER_SEQ
 
     # Here the strategy is to create the success checking fn and then return that depending on the bet type.
     if betType == 'zero':
