@@ -168,6 +168,10 @@ class Bet:
         # TODO: Need to refactor here for multiple game types.
         self.successDomainValidator = _createSuccessDomain(betType)
         self.payout = EUROPEAN_PAYOUTS[betType]
+    def __repr__(self) -> str:
+        return f"Bet: {self.wager} on {self.params or self.betType}"
+    def __str__(self) -> str:
+        return f"Bet: {self.wager} on {self.params or self.betType}"
     def resolve(self, spinResult: object) -> float:
         """Returns the update required to a Player's balance."""
 
