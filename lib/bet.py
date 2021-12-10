@@ -8,37 +8,37 @@ def _createSuccessDomain(betType):
 
     # Here the strategy is to create the success checking fn and then return that depending on the bet type.
     if betType == 'single_number':
-        def isInDomain(spoke : object,  number: int) -> bool:
-            return spoke.number == number
+        def isInDomain(spoke : object,  number_arr: list) -> bool:
+            return spoke.number in number_arr
         
         return isInDomain
     
     if betType == 'two_numbers':
-        def isInDomain(spoke: object, two_number_arr) -> bool:
+        def isInDomain(spoke: object, two_number_arr: list) -> bool:
             return spoke.number in two_number_arr
         
         return isInDomain
     
     if betType == 'three_numbers':
-        def isInDomain(spoke: object, three_number_arr) -> bool:
+        def isInDomain(spoke: object, three_number_arr: list) -> bool:
             return spoke.number in three_number_arr
         
         return isInDomain
     
     if betType == 'four_numbers':
-        def isInDomain(spoke: object, four_number_arr) -> bool:
+        def isInDomain(spoke: object, four_number_arr: list) -> bool:
             return spoke.number in four_number_arr
         
         return isInDomain
     
     if betType == 'five_numbers':
-        def isInDomain(spoke: object, five_number_arr) -> bool:
+        def isInDomain(spoke: object, five_number_arr: list) -> bool:
             return spoke.number in five_number_arr
         
         return isInDomain
     
     if betType == 'six_numbers':
-        def isInDomain(spoke: object, six_number_arr) -> bool:
+        def isInDomain(spoke: object, six_number_arr: list) -> bool:
             return spoke.number in six_number_arr
         
         return isInDomain
@@ -97,6 +97,7 @@ def _createSuccessDomain(betType):
 class Bet:
     """
     Represents a bet placed by a player that is evaluated at the end of a spin.
+    TODO: Update here.
 
     TYPES
     =====
@@ -140,15 +141,29 @@ class Bet:
 
     'upper_third': Covers 25-36; Pays 2 to 1
     """
-    def __init__(self, betType: str, wager: float) -> None:
+    def __init__(self, betType: str, wager: float, params: dict={}) -> None:
         self.betType = betType
         self.wager = wager
+        self.params = params
         # TODO: Need to refactor here for multiple game types.
         self.successDomainValidator = _createSuccessDomain(betType)
         self.payout = EUROPEAN_PAYOUTS[betType]
     def resolve(self, spinResult: object) -> float:
         """Returns the update required to a Player's balance."""
-        if self.successDomainValidator(self.betType):
+        if 'numbers' in self.params:
+            # params of the form {'numbers': [1,2,3,...]}
+            resolveStatus = self.successDomainValidator(spinResult, self.params['numbers'])
+        elif 'parity' in self.params:
+            # params of the form {'parity': 'odd' or 'even'}
+            resolveStatus = self.successDomainValidator(spinResult, self.params['parity'])
+        elif 'colour' in self.params:
+            # params of the form {'colour': 'black' or 'red'}
+            resolveStatus = self.successDomainValidator(spinResult, self.params['colour'])
+        else:
+            resolveStatus = self.successDomainValidator(spinResult)
+
+        
+        if resolveStatus:
             return self.wager * self.payout
         else:
             return self.wager * -1
