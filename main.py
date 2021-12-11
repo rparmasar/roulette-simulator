@@ -1,11 +1,18 @@
-from lib import wheel, wheel_spoke
+from lib import game
+
+from pprint import pprint
 
 def main():
-    Wheel = wheel.createWheel()
-    # print(Wheel)
-    print([Wheel.spin() for i in range(0, 100)])
+    roulette_game = game.Game('European')
+    testBet = {'single_number': {
+        'numbers': [24]
+    }}
+    roulette_game.addPlayer('Rajeev', 1000)
+    roulette_game.addPlayerBet('Rajeev', testBet, 10)
 
-    return 'Complete'
+    result = roulette_game.simulate(n=10)
+    pprint(result)
+
 
 
 

@@ -1,4 +1,3 @@
-from pytest import param
 from . import bet as bt
 
 class Player:
@@ -10,13 +9,16 @@ class Player:
         self.balance = balance
         self.bets = []
     def placeBet(self, bet: dict, wager: float):
+        # TODO: Make sure bets can't be placed that are more than the current balance.
         """
         Adds a bet object to the player's bets property which is evaluated after each spin.
 
         Parameters
         ==========
 
-        bet (dict): An input describing the bet. It is of the form {'betType': params}. Eg. a bet on 24 would be {'single_number': [24]}
+        bet (dict): An input describing the bet. It is of the form {'betType': params}. Eg. a bet on 24 would be {'single_number': 
+            {'numbers': [24]}
+        }
 
         wager (float): The size of the wager.
         """
@@ -33,4 +35,3 @@ class Player:
         """Updates the balance of this Player."""
         self.balance += balance
         return f'New balance for {self.name} is ${self.balance}'
-        

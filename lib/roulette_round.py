@@ -39,11 +39,11 @@ class Round:
 
             player_metadata['balance'] = player.balance
             player_metadata['win'] = 1 if balance_update > 0 else 0
+            metadata['player_metadata'][player] = player_metadata
         
         # Now update the metadata
         metadata['spin_result_number'] = spinResult.number
         metadata['spin_result_colour'] = spinResult.colour
-        metadata['player_metadata'] = player_metadata
         metadata['id'] = self.id
 
         return metadata
