@@ -27,6 +27,7 @@ class Round:
         spinResult = wheel.spin()
 
         metadata = {}
+        metadata['player_metadata'] = {}
 
         # For loop here for readability and easier updating of metadata.
         for player in players:
@@ -39,7 +40,7 @@ class Round:
 
             player_metadata['balance'] = player.balance
             player_metadata['win'] = 1 if balance_update > 0 else 0
-            metadata['player_metadata'][player] = player_metadata
+            metadata['player_metadata'][player.name] = player_metadata
         
         # Now update the metadata
         metadata['spin_result_number'] = spinResult.number
