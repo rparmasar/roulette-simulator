@@ -15,9 +15,10 @@ class Player:
 
         Parameters
         ==========
-            bet (dict): An input describing the bet. It is of the form {'betType': params}. Eg. a bet on 24 would be {'single_number': [24]}
 
-            wager (float): The size of the wager.
+        bet (dict): An input describing the bet. It is of the form {'betType': params}. Eg. a bet on 24 would be {'single_number': [24]}
+
+        wager (float): The size of the wager.
         """
         # These will be tuples
         betTypeTuple, paramsTuple = zip(*bet.items())
