@@ -1,9 +1,4 @@
-import seaborn as sns
-import matplotlib.pyplot as plt
-import pandas as pd
-
 from lib import game, visualizers
-from pprint import pprint
 
 def main():
     roulette_game = game.Game('European')
@@ -23,18 +18,10 @@ def main():
 
     result = roulette_game.simulate(n=1000)
 
-    rounds = [rnd['id'] for rnd in result]
-    player_metadata = [rnd['player_metadata'] for rnd in result]
-    player_balances1 = [x['Rajeev']['balance'] for x in player_metadata]
-    player_balances2 = [x['Gary']['balance'] for x in player_metadata]
-
-    testdict = {'Rajeev': player_balances1, 'Gary': player_balances2}
-    testdf = pd.DataFrame(testdict)
-
+    player_names = list(roulette_game.players.keys())
+    # visualizers.drawBalanceLinePlot(result, player_names)
+    visualizers.drawRealTimeBalancePlot(result, player_names)
     
-    sns.lineplot(data=testdf)
-    
-    plt.show()
     
     
     
